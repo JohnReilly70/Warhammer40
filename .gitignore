@@ -49,3 +49,7 @@ Temporary Items
 #pycache
 __pycache__/
 .idea/
+
+#git
+.gitignore
+.gitattribute
