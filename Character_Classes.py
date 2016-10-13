@@ -18,5 +18,13 @@ class Character:
         self.armour = {'Head' : 0, 'Chest' : 0, 'L Arm' : 0, 'R Arm' : 0, 'L Leg' : 0, 'R Leg' : 0}
         self.weapons = dict()
 
-
+    def Add_Weapon(self, *args):
+        '''
+        Add Weapons to the Character Weapons Dict.
+        Doesn't Matter If not all info is provided
+        '''
+        if len(args) == 8:
+            self.weapons[args[0]] = list(args[1:])
+        else:
+            print("\nFailed to Enter Correct Weapon Data\n\nWords in same column should be kept together ie \"Tearing, Balanced\"")
 
