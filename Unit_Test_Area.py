@@ -43,20 +43,44 @@ class Test_Class_Creation(unittest.TestCase):
     def test_Weapon_Dict(self):
         # Check an empty Dict is started for Weapon
         player = Character_Classes.Character("John")
-        self.assertFalse(player.weapons)
+        self.assertFalse(player.weapons['Melee'])
+        self.assertFalse(player.weapons['Ranged'])
 
     def test_Add_Weapon(self):
         player = Character_Classes.Character("John")
         # Weapons SHould Have Name/Class/Dmg/Pen/Special/Weight/Requistion/MinRenown
         player.Add_Weapon("Astartes Chainsword", "Melee", "1d10+3 R", 4, "Balanced, Tearing", 10, 5, 0)
         player.Add_Weapon("Astartes ChainFist", "Melee", "3d10+3 R", 7, "Tearing", 10, 5, 2)
-        self.assertEqual(player.weapons['Astartes Chainsword'], ['Melee', '1d10+3 R', 4, 'Balanced, Tearing', 10, 5, 0])
-        self.assertEqual(player.weapons['Astartes ChainFist'], ["Melee", "3d10+3 R", 7, "Tearing", 10, 5, 2])
+        self.assertEqual(player.weapons['Melee']['Astartes Chainsword'], ['Melee', '1d10+3 R', 4, 'Balanced, Tearing', 10, 5, 0])
+        self.assertEqual(player.weapons['Melee']['Astartes ChainFist'], ["Melee", "3d10+3 R", 7, "Tearing", 10, 5, 2])
 
     def test_Add_Weapon_Insufficent_Info(self):
+        # Will not add a weapon if all the info is not there. (Min Info as per Table 5-5 / 5-8 DeathWatch Core RuleBook)
         player = Character_Classes.Character("John")
-        player.Add_Weapon("Astartes Bolter", "Melee", "3d10+3 R", 7, "Tearing")
-        self.assertEqual(player.weapons['Astartes Bolter'], "KeyError: 'Astartes Bolter'") #Cannot Get to Work, Tired AssertRaises. Look into more.
+        self.assertFalse(player.Add_Weapon("Astartes Bolter", "Melee", "3d10+3 R", 7, "Tearing"))
+
+    def test_Remove_Weapon(self):
+        # Removes Weapon if Weapon name is correct (Only info required to remove a weapon)
+        player = Character_Classes.Character("John")
+        player.Add_Weapon("Astartes Chainsword", "Melee", "1d10+3 R", 4, "Balanced, Tearing", 10, 5, 0)
+        print(player.weapons)
+        player.Remove_Weapon("Astartes Chainsword")
+        print(player.weapons)
+        self.assertFalse(player.weapons['Melee'])
+
+    def test_Remove_Weapon_Not_In_Inventory(self):
+        # Returns a message stating that weapon name is not in inventory (self.weapons)
+        player = Character_Classes.Character("John")
+        player.Remove_Weapon("Astartes Chainsword")
+        self.assertFalse(player.weapons['Melee'])
+
+    def test_Show_Inventory(self):
+        player = Character_Classes.Character("John")
+        player.Add_Weapon("Astartes Chainsword", "Melee", "1d10+3 R", 4, "Balanced, Tearing", 10, 5, 0)
+        player.Add_Weapon("Astartes Bullet", "Bullet", "1d10+3 R", 4, "Balanced, Tearing", 10, 5, 0)
+        player.Show_Inventory()
+
+
 
 if __name__ == '__main__':
     unittest.main()
