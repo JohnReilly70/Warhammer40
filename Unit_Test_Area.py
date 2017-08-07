@@ -90,14 +90,19 @@ class Test_Class_Creation(unittest.TestCase):
 
     def test_Add_Armour_without_Addition_Info(self):
         player = Character_Classes.Character("John")
-        player.Add_And_Replace_Armour("Carapace Armour", [8, 8, 8, 8, 8, 8])
+        player.Add_And_Replace_Armour("Astartes Power Armour")
 
-        self.assertEqual(player.armour['Info']['Name'], 'Carapace Armour')
-        for index, Armour_Piece in enumerate(player.armour['Rating']):
-            self.assertEqual(player.armour['Rating'][index], 8)
+        self.assertEqual(player.armour['Info']['Name'], 'Astartes Power Armour')
+        self.assertEqual(player.armour['Rating'], '8,10,10,10,10,10')
 
+    def test_Armour_Database_Search_Pass(self):
 
+        player = Character_Classes.Character("John")
+        self.assertEqual(player.Search_Armour('Astartes Power Armour'), ('Astartes Power Armour', 'All', '8,10,10,10,10,10', 0, '-'))
 
+    def test_Armour_Database_Search_Fail(self):
+        player = Character_Classes.Character("John")
+        self.assertEqual(player.Search_Armour('Power Armour'), "No Such Item name in Database")
 
 
 
